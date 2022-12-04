@@ -24,6 +24,8 @@ public class App {
 
         get("/operations/:operation", (req, res) -> operations(req));
 
+        get("/operations/complex/:operation", (req, res) -> operations(req));
+
         get("/hello", (req, res) -> "Hello World");
     }
 
@@ -33,6 +35,18 @@ public class App {
         String operation = req.params(":operation");
        
         String result = connection_socket("127.0.0.1", 8082, operation);
+
+        model.put("nome", result);
+
+        return new VelocityTemplateEngine().render(new ModelAndView(model, "velocity/index.vm"));
+    }
+
+    private static String operations_complex(Request req) throws UnknownHostException, IOException {
+        Map<String, Object> model = new HashMap<>();
+
+        String operation = req.params(":operation");
+       
+        String result = connection_socket("127.0.0.1", 8083, operation);
 
         model.put("nome", result);
 
