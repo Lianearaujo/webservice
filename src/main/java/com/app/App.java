@@ -20,11 +20,11 @@ public class App {
     public static void main(String[] args) {
         exception(Exception.class, (e, req, res) -> e.printStackTrace()); // print all exceptions
         staticFiles.location("/public");
-        port(8081);
+        port(8088);
 
         get("/operations/:operation", (req, res) -> operations(req));
 
-        get("/operations/complex/:operation", (req, res) -> operations(req));
+        get("/complex/:complex", (req, res) -> operations_complex(req));
 
         get("/hello", (req, res) -> "Hello World");
     }
@@ -44,7 +44,7 @@ public class App {
     private static String operations_complex(Request req) throws UnknownHostException, IOException {
         Map<String, Object> model = new HashMap<>();
 
-        String operation = req.params(":operation");
+        String operation = req.params(":complex");
        
         String result = connection_socket("127.0.0.1", 8083, operation);
 
@@ -67,9 +67,7 @@ public class App {
             String str = new String(line);
             System.out.println(str.trim());
         
-            // dis.close();
-            // dos.close();
-            // s.close();
+            s.close();
         
             return str.trim();
         }

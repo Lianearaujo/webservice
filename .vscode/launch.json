@@ -5,6 +5,27 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "java",
+            "name": "Launch ServerOperatation",
+            "request": "launch",
+            "mainClass": "ServerOperatation",
+            "projectName": "app"
+        },
+        {
+            "type": "java",
+            "name": "Launch ServerTwoOperation",
+            "request": "launch",
+            "mainClass": "com.app.ServerTwoOperation",
+            "projectName": "app"
+        },
+        {
+            "type": "java",
+            "name": "Launch ServerOperatation",
+            "request": "launch",
+            "mainClass": "com.app.ServerOperatation",
+            "projectName": "app"
+        },
+        {
             "name": "Java",
             "type": "java",
             "request": "launch",
