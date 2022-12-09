@@ -5,12 +5,9 @@ import spark.template.velocity.VelocityTemplateEngine;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -22,9 +19,9 @@ public class App {
         staticFiles.location("/public");
         port(8088);
 
-        get("/operations/:operation", (req, res) -> operations(req));
+        get("/operations", (req, res) -> operations(req));
 
-        get("/complex/:complex", (req, res) -> operations_complex(req));
+        get("/complex", (req, res) -> operations_complex(req));
 
         get("/hello", (req, res) -> "Hello World");
     }
@@ -32,25 +29,26 @@ public class App {
     private static String operations(Request req) throws UnknownHostException, IOException {
         Map<String, Object> model = new HashMap<>();
 
-        String operation = req.params(":operation");
+        String data = req.body();
        
-        String result = connection_socket("127.0.0.1", 8082, operation);
+        String result = connection_socket("127.0.0.1", 8082, data);
 
         model.put("nome", result);
 
-        return new VelocityTemplateEngine().render(new ModelAndView(model, "velocity/index.vm"));
+        return result;
     }
 
     private static String operations_complex(Request req) throws UnknownHostException, IOException {
         Map<String, Object> model = new HashMap<>();
+    
 
-        String operation = req.params(":complex");
+        String data = req.body();
        
-        String result = connection_socket("127.0.0.1", 8083, operation);
+        String result = connection_socket("127.0.0.1", 8083, data);
 
         model.put("nome", result);
 
-        return new VelocityTemplateEngine().render(new ModelAndView(model, "velocity/index.vm"));
+        return result;
     }
 
     private static String connection_socket(String ip, int port, String operation) {
@@ -66,8 +64,6 @@ public class App {
             dis.read(line);
             String str = new String(line);
             System.out.println(str.trim());
-        
-            s.close();
         
             return str.trim();
         }
